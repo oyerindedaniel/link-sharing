@@ -1,0 +1,241 @@
+@font-face {
+  font-family: $font-instrument-sans-condensed;
+  src: url("../assets/fonts/InstrumentSansCondensed-SemiBoldItalic.woff2")
+      format("woff2"),
+    url("../assets/fonts/InstrumentSansCondensed-SemiBoldItalic.woff")
+      format("woff");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans-condensed;
+  src: url("../assets/fonts/InstrumentSansCondensed-SemiBold.woff2")
+      format("woff2"),
+    url("../assets/fonts/InstrumentSansCondensed-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans-semicondensed;
+  src: url("../assets/fonts/InstrumentSansSemiCondensed-Italic.woff2")
+      format("woff2"),
+    url("../assets/fonts/InstrumentSansSemiCondensed-Italic.woff")
+      format("woff");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans-condensed;
+  src: url("../assets/fonts/InstrumentSansCondensed-Italic.woff2")
+      format("woff2"),
+    url("../assets/fonts/InstrumentSansCondensed-Italic.woff") format("woff");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans-condensed;
+  src: url("../assets/fonts/InstrumentSansCondensed-Bold.woff2") format("woff2"),
+    url("../assets/fonts/InstrumentSansCondensed-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans-semicondensed;
+  src: url("../assets/fonts/InstrumentSansSemiCondensed-BoldItalic.woff2")
+      format("woff2"),
+    url("../assets/fonts/InstrumentSansSemiCondensed-BoldItalic.woff")
+      format("woff");
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans;
+  src: url("../assets/fonts/InstrumentSans-Regular.woff2") format("woff2"),
+    url("../assets/fonts/InstrumentSans-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans;
+  src: url("../assets/fonts/InstrumentSans-Italic.woff2") format("woff2"),
+    url("../assets/fonts/InstrumentSans-Italic.woff") format("woff");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans;
+  src: url("../assets/fonts/InstrumentSans-Bold.woff2") format("woff2"),
+    url("../assets/fonts/InstrumentSans-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans;
+  src: url("../assets/fonts/InstrumentSans-SemiBoldItalic.woff2")
+      format("woff2"),
+    url("../assets/fonts/InstrumentSans-SemiBoldItalic.woff") format("woff");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans-condensed;
+  src: url("../assets/fonts/InstrumentSansCondensed-BoldItalic.woff2")
+      format("woff2"),
+    url("../assets/fonts/InstrumentSansCondensed-BoldItalic.woff")
+      format("woff");
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans-semicondensed;
+  src: url("../assets/fonts/InstrumentSansSemiCondensed-SemiBold.woff2")
+      format("woff2"),
+    url("../assets/fonts/InstrumentSansSemiCondensed-SemiBold.woff")
+      format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans;
+  src: url("../assets/fonts/InstrumentSans-Medium.woff2") format("woff2"),
+    url("../assets/fonts/InstrumentSans-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans-semicondensed;
+  src: url("../assets/fonts/InstrumentSansSemiCondensed-Bold.woff2")
+      format("woff2"),
+    url("../assets/fonts/InstrumentSansSemiCondensed-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans-condensed;
+  src: url("../assets/fonts/InstrumentSansCondensed-MediumItalic.woff2")
+      format("woff2"),
+    url("../assets/fonts/InstrumentSansCondensed-MediumItalic.woff")
+      format("woff");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans-semicondensed;
+  src: url("../assets/fonts/InstrumentSansSemiCondensed-Medium.woff2")
+      format("woff2"),
+    url("../assets/fonts/InstrumentSansSemiCondensed-Medium.woff")
+      format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans-condensed;
+  src: url("../assets/fonts/InstrumentSansCondensed-Regular.woff2")
+      format("woff2"),
+    url("../assets/fonts/InstrumentSansCondensed-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans-condensed;
+  src: url("../assets/fonts/InstrumentSansCondensed-Medium.woff2")
+      format("woff2"),
+    url("../assets/fonts/InstrumentSansCondensed-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans-semicondensed;
+  src: url("../assets/fonts/InstrumentSansSemiCondensed-MediumItalic.woff2")
+      format("woff2"),
+    url("../assets/fonts/InstrumentSansSemiCondensed-MediumItalic.woff")
+      format("woff");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans;
+  src: url("../assets/fonts/InstrumentSans-SemiBold.woff2") format("woff2"),
+    url("../assets/fonts/InstrumentSans-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans;
+  src: url("../assets/fonts/InstrumentSans-BoldItalic.woff2") format("woff2"),
+    url("../assets/fonts/InstrumentSans-BoldItalic.woff") format("woff");
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans-semicondensed;
+  src: url("../assets/fonts/InstrumentSansSemiCondensed-Regular.woff2")
+      format("woff2"),
+    url("../assets/fonts/InstrumentSansSemiCondensed-Regular.woff")
+      format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans-semicondensed;
+  src: url("../assets/fonts/InstrumentSansSemiCondensed-SemiBoldItalic.woff2")
+      format("woff2"),
+    url("../assets/fonts/InstrumentSansSemiCondensed-SemiBoldItalic.woff")
+      format("woff");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: $font-instrument-sans;
+  src: url("../assets/fonts/InstrumentSans-MediumItalic.woff2") format("woff2"),
+    url("../assets/fonts/InstrumentSans-MediumItalic.woff") format("woff");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}

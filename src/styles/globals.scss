@@ -8,5 +8,7 @@
 // @import "./base/fonts";
 @import "./base/base";
 
-@import "./shared/descriptions";
-@import "./shared/titles";
+@import "./shared/text";
+
+@import "./page/login.scss";
+@import "./page/create-account.scss";

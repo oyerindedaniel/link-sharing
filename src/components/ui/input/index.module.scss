@@ -1,0 +1,78 @@
+@import "../../../styles/utils/variables";
+@import "../../../styles/utils/responsive";
+@import "../../../styles/shared/text";
+
+.input-field {
+  &__label {
+    @extend %body-small;
+
+    color: $black;
+    display: inline-block;
+    margin-bottom: 0.4rem;
+
+    &--error {
+      color: $red;
+    }
+  }
+
+  &__container {
+    position: relative;
+    width: 100%;
+  }
+
+  &__required {
+    color: $red;
+    margin-left: 0.25rem;
+  }
+
+  &__left-icon,
+  &__right-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &__left-icon {
+    left: 1.6rem;
+  }
+
+  &__right-icon {
+  }
+
+  &__input {
+    @extend %body-medium;
+
+    background-color: $white;
+    border-radius: 0.8rem;
+    width: 100%;
+    padding: 1.2rem 1.6rem;
+    border: 0.125rem solid $medium-gray;
+    height: 4.8rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:focus {
+      border-color: $primary-color;
+      box-shadow: 0px 0px 32px rgba($primary-color, 0.25);
+      outline: none;
+    }
+
+    &--with-left-icon {
+      padding-left: 4.4rem;
+    }
+
+    &--with-right-icon {
+      padding-right: 4.4rem;
+    }
+
+    &--error {
+      border-color: $red;
+    }
+  }
+
+  &__error {
+    @extend %body-small;
+
+    color: $red;
+    margin-top: 0.25rem;
+  }
+}

@@ -1,0 +1,43 @@
+.create-account {
+  &__content {
+    padding: 4rem;
+  }
+
+  h1 {
+    @extend %heading-medium;
+    margin-bottom: 0.8rem;
+
+    color: $dark-gray;
+  }
+
+  p {
+    @extend %body-medium;
+    color: $medium-gray;
+    margin-bottom: 4rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+  }
+
+  &__password-desribe {
+    @extend %body-small;
+
+    color: $medium-gray;
+    margin: 2.4rem auto;
+    display: inline-block;
+  }
+
+  &__account-action {
+    @extend %body-medium;
+
+    text-align: center;
+
+    &__login {
+      color: $primary-color;
+      margin-left: 1rem;
+    }
+  }
+}

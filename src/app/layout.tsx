@@ -52,7 +52,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(FontInstrumantSans.variable)}>{children}</body>
+      <body className={cn(FontInstrumantSans.variable)}>
+        <main>{children}</main>
+      </body>
     </html>
   );
 }

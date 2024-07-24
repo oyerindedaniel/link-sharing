@@ -1,0 +1,36 @@
+.login {
+  &__content {
+    padding: 4rem;
+  }
+
+  h1 {
+    @extend %heading-medium;
+    margin-bottom: 0.8rem;
+
+    color: $dark-gray;
+  }
+
+  p {
+    @extend %body-medium;
+    color: $medium-gray;
+    margin-bottom: 4rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+  }
+
+  &__account-action {
+    @extend %body-medium;
+
+    margin-top: 2.4rem;
+    text-align: center;
+
+    &__create {
+      color: $primary-color;
+      margin-left: 1rem;
+    }
+  }
+}

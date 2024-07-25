@@ -3,7 +3,8 @@
 import { createLink } from "@/app/_actions";
 import PLATFORM_OPTIONS from "@/app/constants";
 import { Icons } from "@/assets";
-import type { ILinksInputs } from "@/types/links";
+import type { ILinksInputs, Links } from "@/types/links";
+import type { UserRaw } from "@/types/users";
 import { Loader2 } from "lucide-react";
 import { useCallback, useState, useTransition } from "react";
 import {
@@ -27,14 +28,22 @@ export const DEFAULT_LINK_VALUE = {
 
 export const DUMMY_USERID = 1;
 
-export default function Links() {
+export default function Links({
+  userLinks,
+  asEdit,
+  user,
+}: {
+  userLinks: Links;
+  asEdit: boolean;
+  user: UserRaw;
+}) {
   const [isPending, startTransition] = useTransition();
 
-  const [isInitNewLink, setIsInitNewLink] = useState(false);
+  const [isInitNewLink, setIsInitNewLink] = useState(asEdit);
 
   const form = useForm<ILinksInputs>({
     defaultValues: {
-      links: [DEFAULT_LINK_VALUE],
+      links: asEdit ? userLinks : [DEFAULT_LINK_VALUE],
     },
   });
 
@@ -74,17 +83,6 @@ export default function Links() {
     });
   };
 
-  const profile = {
-    firstName: "John",
-    lastName: "Doe",
-    imageUrl: "path/to/image.jpg",
-  };
-
-  const links = [
-    { platform: "GitHub", link: "https://github.com/johndoe" },
-    { platform: "LinkedIn", link: "https://linkedin.com/in/johndoe" },
-  ];
-
   const handlePlatformChange = (platform: string, index: number) => {
     const platformOption = PLATFORM_OPTIONS.find(
       (option) => option.value === platform
@@ -98,7 +96,7 @@ export default function Links() {
     <div className="links">
       <div className="links__content">
         <div>
-          <PhoneDisplay profile={undefined} links={[]} />
+          <PhoneDisplay profile={user} links={userLinks} asEdit={asEdit} />
         </div>
         <div>
           <h1>Customize your links</h1>

@@ -25,8 +25,10 @@ export const platformEnum = pgEnum("platform", platformValues);
 
 export const links = pgTable("links", {
   id: serial("id").primaryKey(),
-  platform: platformEnum("platform").unique(),
-  link: varchar("link", { length: 256 }),
-  brandColor: varchar("brand_color", { length: 256 }),
-  userId: integer("user_id").references(() => users.id),
+  platform: platformEnum("platform").unique().notNull(),
+  link: varchar("link", { length: 256 }).notNull(),
+  brandColor: varchar("brand_color", { length: 256 }).notNull(),
+  userId: integer("user_id")
+    .references(() => users.id)
+    .notNull(),
 });

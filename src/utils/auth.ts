@@ -6,6 +6,7 @@ import { users } from "@db/schema";
 import { eq } from "drizzle-orm";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+// import { cache } from "react";
 
 const COOKIE_NAME = process.env.COOKIE_NAME!;
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET!;

@@ -150,19 +150,24 @@ export const createLink = async (data: ILinksInputs) => {
   }
 };
 
-// export const getLinksByUserId = async (userId: number) => {
-//   try {
-//     const userLinks = await db
-//       .select()
-//       .from(links)
-//       .where(eq(links.userId, userId))
-//       .fetch();
-//     return userLinks;
-//   } catch (error) {
-//     console.error("Error fetching links:", error);
-//     throw new Error("Could not fetch links.");
-//   }
-// };
+export const getLinksByUserId = async (userId?: number) => {
+  const user = await getAuthUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  try {
+    const userLinks = await db.query.links.findMany({
+      where: eq(users.id, user.id),
+    });
+
+    return userLinks;
+  } catch (error) {
+    console.error("Error fetching links:", error);
+    throw new Error("Could not fetch links.");
+  }
+};
 
 // export const updateLink = async (id: number, data: UpdateLinkInputs) => {
 //   const { platform, link, brandColor } = data;

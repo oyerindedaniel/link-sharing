@@ -1,41 +1,44 @@
 "use client";
 
 import { Icons } from "@/assets";
+import type { Links } from "@/types/links";
+import type { UserRaw } from "@/types/users";
 import Image from "next/image";
 import styles from "./index.module.scss";
 
 interface ProfileProps {
-  profile:
-    | { firstName: string; lastName: string; imageUrl: string }
-    | undefined;
+  profile: UserRaw;
 }
 
 interface LinksProps {
-  links: Array<{ platform: string; link: string }>;
+  links: Links;
 }
 
 interface PhoneDisplayProps {
-  profile:
-    | { firstName: string; lastName: string; imageUrl: string }
-    | undefined;
-  links: Array<{ platform: string; link: string }>;
+  profile: UserRaw;
+  links: Links;
+  asEdit: boolean;
 }
 
 function Profile({ profile }: ProfileProps) {
-  const { firstName, lastName, imageUrl } = profile ?? {};
+  const { emailAddress, imgSrc } = profile ?? {};
 
   return (
     <div className={styles.profile}>
       {profile ? (
         <>
-          <Image
-            src={imageUrl!}
-            alt={`${firstName} ${lastName}`}
-            className={styles.profileImage}
-          />
+          {imgSrc ? (
+            <Image
+              src={imgSrc!}
+              alt={`${emailAddress}`}
+              className={styles.profileImage}
+            />
+          ) : (
+            <div className={styles.placeholderImage} />
+          )}
           <div className={styles.names}>
-            <span className={styles.firstName}>{firstName}</span>
-            <span className={styles.lastName}>{lastName}</span>
+            <span className={styles.firstName}>{emailAddress}</span>
+            <span className={styles.lastName}>{"devlinks"}</span>
           </div>
         </>
       ) : (

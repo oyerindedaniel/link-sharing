@@ -32,10 +32,10 @@ function Profile({ profile }: ProfileProps) {
             <Image
               src={imgSrc!}
               alt={`${emailAddress}`}
-              className={styles.profileImage}
+              className="profileImage"
             />
           ) : (
-            <div className={styles.placeholderImage} />
+            <div className="placeholderImage" />
           )}
           <div className={styles.names}>
             <span className={styles.firstName}>{emailAddress}</span>

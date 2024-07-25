@@ -24,3 +24,7 @@ export function getBaseUrl() {
 export function absoluteUrl(path: string) {
   return `${getBaseUrl()}${path}`;
 }
+
+export const generateUserLink = (userId: number): string => {
+  return `${getBaseUrl()}/${userId}`;
+};

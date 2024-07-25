@@ -97,6 +97,15 @@ a:hover {
   gap: 0.5rem !important;
 }
 
+.profileImage,
+.placeholderImage {
+  width: 9.6rem;
+  height: 9.6rem;
+  border-radius: 50%;
+  background-color: $placeholder;
+  margin-bottom: 2.5rem;
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);

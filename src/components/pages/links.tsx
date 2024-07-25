@@ -73,14 +73,11 @@ export default function Links({
   };
 
   const onSubmit: SubmitHandler<ILinksInputs> = (data) => {
-    console.log(data);
-
     if (asEdit) {
       return startTransition(() => {
         updateLinks(data)
           .then((res) => {
             console.log(res);
-            reset();
           })
           .catch((err) => console.error(err));
       });
@@ -90,7 +87,6 @@ export default function Links({
       createLink({ ...data, userId: DUMMY_USERID })
         .then((res) => {
           console.log(res);
-          reset();
         })
         .catch((err) => console.error(err));
     });

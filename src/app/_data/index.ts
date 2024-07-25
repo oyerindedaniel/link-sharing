@@ -1,16 +1,17 @@
 "use server";
 
-import { getAuthUser } from "@/utils/auth";
 import db from "@db/drizzle";
 import { links } from "@db/schema";
 import { eq } from "drizzle-orm";
 import { unstable_cache as next_cache } from "next/cache";
 import { redirect } from "next/navigation";
 
-export const getLinksByUserId = async () => {
-  const user = await getAuthUser();
-
-  if (!user) {
+export const getLinksByUserId = async ({
+  userId,
+}: {
+  userId: number | undefined;
+}) => {
+  if (!userId) {
     return redirect("/login");
   }
 
@@ -29,5 +30,5 @@ export const getLinksByUserId = async () => {
     },
     undefined,
     { tags: ["user_links"] }
-  )(user.id);
+  )(userId);
 };

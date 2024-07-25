@@ -1,9 +1,10 @@
 "use client";
 
 import { Icons } from "@/assets";
+import { User } from "@/types/users";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Button from "../ui/button";
 import styles from "./header.module.scss";
 
@@ -12,8 +13,9 @@ const LINKS = [
   { url: "/profile", icon: Icons.ProfileImage, name: "Profile Details" },
 ];
 
-export default function Header() {
+export default function Header({ user }: { user: User }) {
   const pathname = usePathname();
+  const router = useRouter();
 
   return (
     <header className={styles.header}>
@@ -58,6 +60,7 @@ export default function Header() {
           className={styles["header__button-preview"]}
           variant="outline"
           size="large"
+          onClick={() => router.push(`/preview/${user.id}`)}
         >
           Preview
         </Button>

@@ -22,15 +22,6 @@
   align-items: center;
   margin-bottom: 5.6rem;
 
-  .profileImage,
-  .placeholderImage {
-    width: 9.6rem;
-    height: 9.6rem;
-    border-radius: 50%;
-    background-color: $placeholder;
-    margin-bottom: 2.5rem;
-  }
-
   .placeholderNames {
     display: flex;
     flex-direction: column;

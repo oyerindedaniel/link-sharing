@@ -35,7 +35,7 @@ export default function Preview({
         </div>
         <div
           style={{ height: "100%", overflow: "visible", padding: 0 }}
-          className="links"
+          className="links-platform"
         >
           {userLinks.map((link, index) => {
             const IconComponent = getIconForPlatform(link.platform);

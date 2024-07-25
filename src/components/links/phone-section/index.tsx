@@ -59,7 +59,7 @@ function LinksSection({ links }: LinksProps) {
   return (
     <div className={styles.linksSection}>
       {links.length > 0 ? (
-        <div className="links">
+        <div className="links-platform">
           {links.map((link, index) => {
             const IconComponent = getIconForPlatform(link.platform!);
 

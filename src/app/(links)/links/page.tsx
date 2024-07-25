@@ -1,4 +1,4 @@
-import { getLinksByUserId } from "@/app/_actions";
+import { getLinksByUserId } from "@/app/_data";
 import Links from "@/components/pages/links";
 import { getAuthUser } from "@/utils/auth";
 

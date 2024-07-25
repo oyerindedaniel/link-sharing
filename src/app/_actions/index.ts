@@ -6,9 +6,10 @@ import { getAuthUser } from "@/utils/auth";
 import db from "@db/drizzle";
 import { links, users } from "@db/schema";
 import bcrypt from "bcryptjs";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import jwt from "jsonwebtoken";
 import _ from "lodash";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -129,7 +130,7 @@ export const createLink = async (data: ILinksInputs) => {
   const user = await getAuthUser();
 
   if (!user) {
-    redirect("/login");
+    return redirect("/login");
     // throw new Error("Unauthenticated");
   }
 
@@ -143,6 +144,8 @@ export const createLink = async (data: ILinksInputs) => {
 
     const newLinks = await db.insert(links).values(linkValues).returning();
 
+    revalidatePath(`/links`);
+    revalidateTag("user_links");
     return newLinks;
   } catch (error) {
     console.error("Error creating links:", error);
@@ -150,24 +153,67 @@ export const createLink = async (data: ILinksInputs) => {
   }
 };
 
-export const getLinksByUserId = async (userId?: number) => {
+export const updateLinks = async (data: ILinksInputs) => {
+  const { links: linkData, userId } = data;
+
   const user = await getAuthUser();
 
   if (!user) {
-    redirect("/login");
+    return redirect("/login");
   }
 
+  // TODO: improve query
+
   try {
-    const userLinks = await db.query.links.findMany({
-      where: eq(links.userId, user.id),
-    });
+    const updatedLinks = await Promise.all(
+      linkData.map(async (linkItem) => {
+        const { id, platform, link, brandColor } = linkItem;
 
-    console.log("--------------fff", userLinks);
+        if (id) {
+          const existingLink = await db.query.links.findFirst({
+            where: and(eq(links.platform, platform), eq(links.userId, user.id)),
+          });
 
-    return userLinks;
+          if (!existingLink || existingLink.userId !== user.id) {
+            throw new Error("Link not found or unauthorized");
+          }
+
+          if (existingLink.link === link) {
+            return existingLink;
+          }
+
+          const updatedLink = await db
+            .update(links)
+            .set({
+              link,
+              brandColor,
+            })
+            .where(eq(links.id, id))
+            .returning();
+
+          return updatedLink;
+        } else {
+          const newLink = await db
+            .insert(links)
+            .values({
+              platform,
+              link,
+              brandColor,
+              userId: user.id,
+            })
+            .returning();
+
+          return newLink;
+        }
+      })
+    );
+
+    revalidatePath(`/links`);
+    revalidateTag("user_links");
+    return updatedLinks;
   } catch (error) {
-    console.error("Error fetching links:", error);
-    throw new Error("Could not fetch links.");
+    console.error("Error updating links:", error);
+    throw new Error("Could not update links.");
   }
 };
 
@@ -188,6 +234,8 @@ export const updateLink = async (
       .where(eq(links.id, id))
       .returning();
 
+    revalidatePath(`/links`);
+    revalidateTag("user_links");
     return updatedLink;
   } catch (error) {
     console.error("Error updating link:", error);

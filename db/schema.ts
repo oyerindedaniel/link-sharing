@@ -5,6 +5,7 @@ import {
   pgEnum,
   pgTable,
   serial,
+  uniqueIndex,
   varchar,
 } from "drizzle-orm/pg-core";
 
@@ -23,12 +24,23 @@ export const users = pgTable(
 
 export const platformEnum = pgEnum("platform", platformValues);
 
-export const links = pgTable("links", {
-  id: serial("id").primaryKey(),
-  platform: platformEnum("platform").unique().notNull(),
-  link: varchar("link", { length: 256 }).notNull(),
-  brandColor: varchar("brand_color", { length: 256 }).notNull(),
-  userId: integer("user_id")
-    .references(() => users.id)
-    .notNull(),
-});
+export const links = pgTable(
+  "links",
+  {
+    id: serial("id").primaryKey(),
+    platform: platformEnum("platform").notNull(),
+    link: varchar("link", { length: 256 }).notNull(),
+    brandColor: varchar("brand_color", { length: 256 }).notNull(),
+    userId: integer("user_id")
+      .references(() => users.id)
+      .notNull(),
+  },
+  (table) => {
+    return {
+      userPlatformIndex: uniqueIndex("user_platform_idx").on(
+        table.userId,
+        table.platform
+      ),
+    };
+  }
+);

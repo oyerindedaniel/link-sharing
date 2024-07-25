@@ -1,6 +1,6 @@
 "use client";
 
-import { createLink } from "@/app/_actions";
+import { createLink, updateLinks } from "@/app/_actions";
 import PLATFORM_OPTIONS from "@/app/constants";
 import { Icons } from "@/assets";
 import type { ILinksInputs, Links } from "@/types/links";
@@ -73,6 +73,19 @@ export default function Links({
   };
 
   const onSubmit: SubmitHandler<ILinksInputs> = (data) => {
+    console.log(data);
+
+    if (asEdit) {
+      return startTransition(() => {
+        updateLinks(data)
+          .then((res) => {
+            console.log(res);
+            reset();
+          })
+          .catch((err) => console.error(err));
+      });
+    }
+
     startTransition(() => {
       createLink({ ...data, userId: DUMMY_USERID })
         .then((res) => {

@@ -31,6 +31,7 @@ export default function CreateAccount() {
       createUser(data)
         .then((res) => {
           console.log(res.message);
+          form.reset();
           router.push("/login");
         })
         .catch((err) => console.error(err));

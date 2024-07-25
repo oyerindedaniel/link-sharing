@@ -1,12 +1,12 @@
+import { platformValues } from "@/types/platform";
 import {
+  index,
   integer,
   pgEnum,
   pgTable,
   serial,
   varchar,
-  index,
 } from "drizzle-orm/pg-core";
-import { platformValues } from "@/types/platform";
 
 export const users = pgTable(
   "users",
@@ -25,7 +25,7 @@ export const platformEnum = pgEnum("platform", platformValues);
 
 export const links = pgTable("links", {
   id: serial("id").primaryKey(),
-  platform: platformEnum("platform"),
+  platform: platformEnum("platform").unique(),
   link: varchar("link", { length: 256 }),
   brandColor: varchar("brand_color", { length: 256 }),
   userId: integer("user_id").references(() => users.id),

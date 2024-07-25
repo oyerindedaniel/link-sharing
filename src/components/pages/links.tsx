@@ -1,9 +1,11 @@
 "use client";
 
+import { createLink } from "@/app/_actions";
 import PLATFORM_OPTIONS from "@/app/constants";
 import { Icons } from "@/assets";
 import type { ILinksInputs } from "@/types/links";
-import { useCallback, useState } from "react";
+import { Loader2 } from "lucide-react";
+import { useCallback, useState, useTransition } from "react";
 import {
   FormProvider,
   SubmitHandler,
@@ -17,10 +19,18 @@ import Button from "../ui/button";
 import Input from "../ui/input";
 import Select from "../ui/select";
 
-export const DEFAULT_LINK_VALUE = { link: "", platform: "", brandColor: "" };
+export const DEFAULT_LINK_VALUE = {
+  link: "",
+  platform: "github",
+  brandColor: "",
+} as ILinksInputs["links"][number];
+
+export const DUMMY_USERID = 1;
 
 export default function Links() {
-  const [isInitNewLink, setIsInitNewLink] = useState(true);
+  const [isPending, startTransition] = useTransition();
+
+  const [isInitNewLink, setIsInitNewLink] = useState(false);
 
   const form = useForm<ILinksInputs>({
     defaultValues: {
@@ -34,6 +44,7 @@ export default function Links() {
     formState: { errors },
     watch,
     setValue,
+    reset,
   } = form;
 
   const { fields, append, remove } = useFieldArray({
@@ -53,7 +64,14 @@ export default function Links() {
   };
 
   const onSubmit: SubmitHandler<ILinksInputs> = (data) => {
-    console.log(data);
+    startTransition(() => {
+      createLink({ ...data, userId: DUMMY_USERID })
+        .then((res) => {
+          console.log(res);
+          reset();
+        })
+        .catch((err) => console.error(err));
+    });
   };
 
   const profile = {
@@ -168,11 +186,13 @@ export default function Links() {
                     </div>
                     <div className={styles["your-links__action"]}>
                       <Button
-                        className={styles["your-links__action--submit"]}
+                        className={`${styles["your-links__action--submit"]} flex-loader`}
                         type="submit"
                         variant="primary"
                         size="large"
+                        disabled={isPending}
                       >
+                        {isPending && <Loader2 className="animate-spin" />}
                         Save
                       </Button>
                     </div>

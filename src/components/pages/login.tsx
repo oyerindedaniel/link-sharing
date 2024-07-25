@@ -32,6 +32,7 @@ export default function Login() {
       loginUser(data)
         .then((res) => {
           console.log(res);
+          form.reset();
           router.push("/links");
         })
         .catch((err) => console.error(err));

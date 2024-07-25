@@ -1,3 +1,6 @@
+import { Platform } from "./platform";
+
 export interface ILinksInputs {
-  links: Array<{ platform: string; link: string; brandColor: string }>;
+  links: Array<{ platform: Platform; link: string; brandColor: string }>;
+  userId: number;
 }

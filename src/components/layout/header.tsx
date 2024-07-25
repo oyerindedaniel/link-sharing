@@ -19,7 +19,13 @@ export default function Header() {
     <header className={styles.header}>
       <div className={styles.header__content}>
         <Link href="/login">
-          <Image src={Icons.SvgLogo} alt="devlinks" priority quality={100} />
+          <Image
+            src={Icons.SvgLogo}
+            alt="devlinks"
+            // priority
+            // quality={100}
+            unoptimized
+          />
         </Link>
 
         <nav>

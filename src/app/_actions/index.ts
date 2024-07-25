@@ -1,8 +1,9 @@
 "use server";
 
 import { ICreateAccountInputs } from "@/types/account";
+import { ILinksInputs } from "@/types/links";
 import db from "@db/drizzle";
-import { users } from "@db/schema";
+import { links, users } from "@db/schema";
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 import jwt from "jsonwebtoken";
@@ -122,26 +123,25 @@ export const loginUser = async (
 //   }
 // };
 
-// export const createLink = async (data: InsertLinkInputs) => {
-//   const { platform, link, brandColor, userId } = data;
+export const createLink = async (data: ILinksInputs) => {
+  const { links: linkData, userId } = data;
 
-//   try {
-//     const newLink = await db
-//       .insert(links)
-//       .values({
-//         platform,
-//         link,
-//         brandColor,
-//         userId,
-//       })
-//       .returning();
+  try {
+    const linkValues = linkData.map((linkItem) => ({
+      platform: linkItem.platform,
+      link: linkItem.link,
+      brandColor: linkItem.brandColor,
+      userId,
+    }));
 
-//     return newLink;
-//   } catch (error) {
-//     console.error("Error creating link:", error);
-//     throw new Error("Could not create link.");
-//   }
-// };
+    const newLinks = await db.insert(links).values(linkValues).returning();
+
+    return newLinks;
+  } catch (error) {
+    console.error("Error creating links:", error);
+    throw new Error("Could not create links.");
+  }
+};
 
 // export const getLinksByUserId = async (userId: number) => {
 //   try {

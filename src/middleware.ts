@@ -6,13 +6,9 @@ const GUEST_ROUTES = ["/login", "/create-account"];
 const PROTECTED_ROUTE_REDIRECT = "/login";
 const AUTHENTICATED_REDIRECT = "/links";
 
-console.log("----------------------------------------------------middleware");
-
 export async function middleware(req: NextRequest) {
   const tokenCookie = req.cookies.get(process.env.COOKIE_NAME!);
   const token = tokenCookie ? tokenCookie.value : null;
-
-  console.log("middleware", token);
 
   if (!token) {
     if (!GUEST_ROUTES.includes(req.nextUrl.pathname)) {

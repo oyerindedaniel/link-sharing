@@ -159,8 +159,10 @@ export const getLinksByUserId = async (userId?: number) => {
 
   try {
     const userLinks = await db.query.links.findMany({
-      where: eq(users.id, user.id),
+      where: eq(links.userId, user.id),
     });
+
+    console.log("--------------fff", userLinks);
 
     return userLinks;
   } catch (error) {
@@ -169,23 +171,26 @@ export const getLinksByUserId = async (userId?: number) => {
   }
 };
 
-// export const updateLink = async (id: number, data: UpdateLinkInputs) => {
-//   const { platform, link, brandColor } = data;
+export const updateLink = async (
+  id: number,
+  data: Partial<ILinksInputs["links"][number]>
+) => {
+  const { platform, link, brandColor } = data;
 
-//   try {
-//     const updatedLink = await db
-//       .update(links)
-//       .set({
-//         platform,
-//         link,
-//         brandColor,
-//       })
-//       .where(eq(links.id, id))
-//       .returning();
+  try {
+    const updatedLink = await db
+      .update(links)
+      .set({
+        platform,
+        link,
+        brandColor,
+      })
+      .where(eq(links.id, id))
+      .returning();
 
-//     return updatedLink;
-//   } catch (error) {
-//     console.error("Error updating link:", error);
-//     throw new Error("Could not update link.");
-//   }
-// };
+    return updatedLink;
+  } catch (error) {
+    console.error("Error updating link:", error);
+    throw new Error("Could not update link.");
+  }
+};

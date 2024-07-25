@@ -19,7 +19,7 @@ export async function middleware(req: NextRequest) {
 
   try {
     const decoded = await getAuthUser();
-    req.user = decoded;
+    // req.user = decoded;
 
     if (GUEST_ROUTES.includes(req.nextUrl.pathname)) {
       return NextResponse.redirect(new URL(AUTHENTICATED_REDIRECT, req.url));

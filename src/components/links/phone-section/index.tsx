@@ -1,5 +1,6 @@
 "use client";
 
+import { getIconForPlatform } from "@/app/constants";
 import { Icons } from "@/assets";
 import type { Links } from "@/types/links";
 import type { UserRaw } from "@/types/users";
@@ -59,12 +60,28 @@ function LinksSection({ links }: LinksProps) {
     <div className={styles.linksSection}>
       {links.length > 0 ? (
         <div className={styles.links}>
-          {links.map((link, index) => (
-            <div key={index} className={styles.link}>
-              <span>{link.platform}</span>
-              <a href={link.link}>{link.link}</a>
-            </div>
-          ))}
+          {links.map((link, index) => {
+            const IconComponent = getIconForPlatform(link.platform!);
+
+            return (
+              <div
+                style={{ backgroundColor: link.brandColor, color: "white" }}
+                key={link.id}
+                className={styles.link}
+              >
+                <span>
+                  {IconComponent && <IconComponent className="icon" />}
+                </span>
+                <a href={link.link} target="_blank" rel="noopener noreferrer">
+                  {link.platform}
+                </a>
+                <Icons.ArrowRight
+                  className="icon"
+                  style={{ marginLeft: "auto" }}
+                />
+              </div>
+            );
+          })}
         </div>
       ) : (
         <div className={styles.empty}>

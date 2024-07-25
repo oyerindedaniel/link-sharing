@@ -109,3 +109,26 @@ const PLATFORM_OPTIONS = [
 }>;
 
 export default PLATFORM_OPTIONS;
+
+const platformIconMap: Record<string, React.FC<IconProps>> = {
+  github: Icons.Github,
+  frontendMentor: Icons.FrontendMentor,
+  twitter: Icons.Twitter,
+  linkedin: Icons.Linkendin,
+  youtube: Icons.Youtube,
+  facebook: Icons.Facebook,
+  twitch: Icons.Twitch,
+  devto: Icons.Devto,
+  codewars: Icons.CodeWars,
+  codepen: Icons.Codepen,
+  freeCodeCamp: Icons.FreeCodeCamp,
+  gitlab: Icons.Gitlab,
+  hashnode: Icons.Hashnode,
+  stackoverflow: Icons.StackOverflow,
+};
+
+export const getIconForPlatform = (
+  platform: string
+): React.FC<IconProps> | undefined => {
+  return platformIconMap[platform.toLowerCase()];
+};

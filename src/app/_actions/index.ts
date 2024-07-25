@@ -2,6 +2,7 @@
 
 import { ICreateAccountInputs } from "@/types/account";
 import { ILinksInputs } from "@/types/links";
+import { getAuthUser } from "@/utils/auth";
 import db from "@db/drizzle";
 import { links, users } from "@db/schema";
 import bcrypt from "bcryptjs";
@@ -9,14 +10,15 @@ import { eq } from "drizzle-orm";
 import jwt from "jsonwebtoken";
 import _ from "lodash";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const SALT_ROUNDS = 10;
 
 const isProduction = process.env.NODE_ENV === "production";
 
-console.log(isProduction);
+export type JwtPayloadType = { id: number };
 
-function generateAccessToken({ id }: { id: number }): string {
+function generateAccessToken({ id }: JwtPayloadType): string {
   return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET!, {
     algorithm: "HS256",
   });
@@ -24,8 +26,6 @@ function generateAccessToken({ id }: { id: number }): string {
 
 export const createUser = async (data: ICreateAccountInputs) => {
   const { emailAddress, password, confirmPassword } = data;
-
-  console.log(data);
 
   if (password !== confirmPassword) {
     throw new Error("Passwords do not match.");
@@ -126,12 +126,19 @@ export const loginUser = async (
 export const createLink = async (data: ILinksInputs) => {
   const { links: linkData, userId } = data;
 
+  const user = await getAuthUser();
+
+  if (!user) {
+    redirect("/login");
+    // throw new Error("Unauthenticated");
+  }
+
   try {
     const linkValues = linkData.map((linkItem) => ({
       platform: linkItem.platform,
       link: linkItem.link,
       brandColor: linkItem.brandColor,
-      userId,
+      userId: user.id,
     }));
 
     const newLinks = await db.insert(links).values(linkValues).returning();

@@ -3,8 +3,8 @@
 import { Icons } from "@/assets";
 import Link from "next/link";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import Button from "./ui/button";
-import Input from "./ui/input";
+import Button from "../ui/button";
+import Input from "../ui/input";
 
 export default function CreateAccount() {
   interface ICreateAccountInputs {

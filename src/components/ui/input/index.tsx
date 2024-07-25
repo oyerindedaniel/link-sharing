@@ -1,8 +1,21 @@
 "use client";
 
 import React, { forwardRef } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import {
+  Controller,
+  FieldError,
+  type FieldPath,
+  type FieldValues,
+  useFormContext,
+} from "react-hook-form";
 import styles from "./index.module.scss";
+
+type FormFieldContextValue<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> = {
+  name: TName;
+};
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
@@ -11,6 +24,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   validations?: Record<string, any>;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  error?: string;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -21,6 +35,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       leftIcon,
       rightIcon,
       required = false,
+      error,
       validations = {},
       ...inputProps
     },
@@ -32,16 +47,25 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     const {
       control,
       formState: { errors },
+      getFieldState,
+      formState,
     } = useFormContext();
 
     const isRequired = required || Object.keys(validations).length > 0;
+
+    let errorMessage: string | undefined = error;
+    if (!errorMessage && errors[name]) {
+      errorMessage = (errors[name] as FieldError)?.message || "Can't be empty";
+    }
+
+    // const fieldState = getFieldState(fieldContext.name, formState);
 
     return (
       <div className={styles["input-field"]}>
         <label
           htmlFor={name}
           className={`${styles["input-field__label"]} ${
-            errors[name] ? styles["input-field__label--error"] : ""
+            errorMessage ? styles["input-field__label--error"] : ""
           }`}
         >
           {label}{" "}
@@ -69,8 +93,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                   leftIcon ? styles["input-field__input--with-left-icon"] : ""
                 } ${
                   rightIcon ? styles["input-field__input--with-right-icon"] : ""
-                } ${errors[name] ? styles["input-field__input--error"] : ""}`}
-                aria-invalid={errors[name] ? "true" : "false"}
+                } ${errorMessage ? styles["input-field__input--error"] : ""}`}
+                aria-invalid={errorMessage ? "true" : "false"}
                 aria-describedby={`${name}-error`}
               />
               {rightIcon && (
@@ -81,13 +105,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             </div>
           )}
         />
-        {errors[name]?.message && (
+        {errorMessage && (
           <span
             id={`${name}-error`}
             role="alert"
             className={styles["input-field__error"]}
           >
-            {(errors[name]?.message as string) || ""}
+            {errorMessage}
           </span>
         )}
       </div>

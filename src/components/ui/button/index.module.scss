@@ -2,14 +2,18 @@
 @import "../../../styles/utils/responsive";
 @import "../../../styles/shared/text";
 
+.button,
+.slot {
+  border-radius: 0.8rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 .button {
   display: inline-block;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
   border: none;
-  border-radius: 0.8rem;
-  transition: background-color 0.3s ease, color 0.3s ease;
 
   span {
     vertical-align: middle;
@@ -33,7 +37,14 @@
 
   &--unstyled {
     background-color: transparent;
-    color: $light-gray;
+    color: $medium-gray;
+
+    &:active,
+    &:hover,
+    &:focus {
+      background-color: $tertiary-color;
+      color: $primary-color;
+    }
   }
 
   &--secondary {
@@ -42,6 +53,18 @@
   &--danger {
     background-color: $red;
     color: $white;
+  }
+
+  &--outline {
+    background-color: $white;
+    color: $primary-color;
+    border: 0.135rem solid $primary-color;
+
+    &:active,
+    &:hover,
+    &:focus {
+      background-color: $tertiary-color;
+    }
   }
 
   &--fit {
@@ -62,7 +85,7 @@
   &--large {
     @extend %body-medium;
 
-    width: 39.6rem;
     height: 4.6rem;
+    // width: 100%;
   }
 }

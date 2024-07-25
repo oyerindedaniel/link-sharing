@@ -1,0 +1,47 @@
+.links {
+  padding: 2.4rem;
+  background-color: $almost-white;
+
+  &__content {
+    display: flex;
+    gap: 2.4rem;
+    height: 100%;
+
+    & > div:first-child {
+      padding: 10.15rem 2.4rem;
+      background-color: $white;
+      border-radius: 1.2rem;
+    }
+
+    & > div:nth-child(2) {
+      flex: 74.5%;
+      background-color: $white;
+      padding: 4rem;
+      border-radius: 1.2rem;
+      display: flex;
+      flex-direction: column;
+
+      h1 {
+        @extend %heading-medium;
+        margin-bottom: 0.8rem;
+
+        color: $dark-gray;
+      }
+
+      p {
+        @extend %body-medium;
+        color: $medium-gray;
+        margin-bottom: 4rem;
+      }
+
+      .button-add-new-link {
+        width: 100%;
+        margin-bottom: 2.4rem;
+      }
+
+      form {
+        flex: 1;
+      }
+    }
+  }
+}

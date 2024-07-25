@@ -1,0 +1,119 @@
+@import "../../../styles/utils/variables";
+@import "../../../styles/shared/text";
+
+.phoneDisplay {
+  position: relative;
+
+  .content {
+    position: absolute;
+    height: calc(63.1rem - 6.35rem - 5.35rem);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 2.5rem);
+    text-align: center;
+    padding: 0 2.35rem;
+  }
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 5.6rem;
+
+  .profileImage,
+  .placeholderImage {
+    width: 9.6rem;
+    height: 9.6rem;
+    border-radius: 50%;
+    background-color: $placeholder;
+    margin-bottom: 2.5rem;
+  }
+
+  .placeholderNames {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.3rem;
+    width: 100%;
+
+    .placeholderFirstName,
+    .placeholderLastName {
+      background-color: $placeholder;
+      border-radius: 10.4rem;
+      display: inline-block;
+    }
+
+    .placeholderFirstName {
+      height: 1.6rem;
+      width: 65%;
+    }
+
+    .placeholderLastName {
+      height: 0.8rem;
+      width: 50%;
+    }
+  }
+
+  .names {
+    text-align: center;
+
+    .firstName,
+    .lastName {
+      display: block;
+      color: #888;
+      font-size: 14px;
+    }
+  }
+}
+
+.linksSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: auto;
+  gap: 2rem;
+
+  .links,
+  .empty {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 30rem;
+    overflow: auto;
+    gap: 2rem;
+  }
+
+  .link {
+    margin: 10px 0;
+    font-size: 14px;
+    width: 100%;
+    height: 4.4rem;
+
+    span {
+      display: block;
+      font-weight: bold;
+    }
+
+    a {
+      color: #000;
+      text-decoration: none;
+      word-break: break-all;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .empty {
+    .placeholderLink {
+      width: 100%;
+      height: 4.4rem;
+      background-color: $placeholder;
+      border-radius: 0.8rem;
+    }
+  }
+}

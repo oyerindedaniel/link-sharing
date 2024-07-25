@@ -1,0 +1,54 @@
+@import "../../styles/utils/variables";
+@import "../../styles/shared/text";
+
+.header {
+  background-color: $almost-white;
+  padding: 2.4rem;
+
+  &__content {
+    height: 7.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $white;
+    padding: 1.6rem;
+  }
+
+  ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.6rem;
+  }
+
+  &__link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+
+    &:first-child {
+      width: 12.2rem;
+    }
+
+    &:last-child {
+      width: 18.7rem;
+    }
+
+    &--active {
+      background-color: $tertiary-color !important;
+      color: $primary-color !important;
+    }
+
+    &__icon {
+      width: 2rem;
+      height: 2rem;
+      margin-right: 0.2rem;
+    }
+  }
+
+  &__button-preview {
+    font-weight: bold;
+    width: 11.4rem;
+  }
+}

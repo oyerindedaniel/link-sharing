@@ -2,7 +2,7 @@
 @import "../../../styles/utils/responsive";
 @import "../../../styles/shared/text";
 
-.input-field {
+.select-field {
   &__label {
     @extend %body-small;
 
@@ -19,31 +19,27 @@
     position: relative;
     display: flex;
     align-items: center;
+
+    &__left-icon,
+    &__right-icon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    &__left-icon {
+      left: 1.6rem;
+    }
+
+    &__right-icon {
+    }
   }
 
-  &__required {
-    color: $red;
-    margin-left: 0.25rem;
-  }
-
-  &__left-icon,
-  &__right-icon {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-  }
-
-  &__left-icon {
-    left: 1.6rem;
-  }
-
-  &__right-icon {
-  }
-
-  &__input {
+  &__select {
     @extend %body-medium;
 
+    color: $medium-gray;
     background-color: $white;
     border-radius: 0.8rem;
     width: 100%;
@@ -65,10 +61,11 @@
     &--with-right-icon {
       padding-right: 4.4rem;
     }
+  }
 
-    &--error {
-      border-color: $red;
-    }
+  &__required {
+    color: $red;
+    margin-left: 0.25rem;
   }
 
   &__error {

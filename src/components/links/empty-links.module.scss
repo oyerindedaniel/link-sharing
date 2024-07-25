@@ -1,0 +1,32 @@
+@import "../../styles/utils/variables";
+@import "../../styles/shared/text";
+
+.empty-links {
+  background-color: $almost-white;
+  padding: 6.25rem 2rem;
+  border-radius: 1.2rem;
+
+  &__content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &__image {
+    }
+
+    h2 {
+      @extend %heading-medium;
+
+      margin-top: 4rem;
+      margin-bottom: 2.4rem;
+    }
+
+    p {
+      @extend %body-medium;
+
+      width: 48.8rem;
+    }
+  }
+}

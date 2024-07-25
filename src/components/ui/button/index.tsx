@@ -4,7 +4,12 @@ import { Slot, Slottable } from "@radix-ui/react-slot";
 import React, { type ButtonHTMLAttributes, forwardRef } from "react";
 import styles from "./index.module.scss";
 
-type ButtonVariant = "primary" | "secondary" | "danger" | "unstyled";
+type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "danger"
+  | "unstyled"
+  | "outline";
 type ButtonSize = "small" | "medium" | "large" | "fit";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -13,6 +18,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   leftElement?: React.ReactNode;
   rightElement?: React.ReactNode;
   asChild?: boolean;
+  children: React.ReactNode;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -30,7 +36,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const buttonClasses = [
-      styles.button,
+      ...[asChild ? styles.slot : styles.button],
       styles[`button--${variant}`],
       styles[`button--${size}`],
       className,
@@ -39,7 +45,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button";
 
     return (
-      <Comp className={buttonClasses} {...rest} ref={ref}>
+      <Comp className={buttonClasses} ref={ref} {...rest}>
         {leftElement && leftElement}
         <Slottable>{children}</Slottable>
         {rightElement && rightElement}

@@ -3,8 +3,8 @@
 import { Icons } from "@/assets";
 import Link from "next/link";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import Button from "./ui/button";
-import Input from "./ui/input";
+import Button from "../ui/button";
+import Input from "../ui/input";
 
 export default function Login() {
   interface ILoginInputs {
@@ -22,8 +22,6 @@ export default function Login() {
   const onSubmit: SubmitHandler<ILoginInputs> = (data) => {
     console.log(data);
   };
-
-  console.log(form.formState.errors);
 
   return (
     <div className="login">

@@ -6,20 +6,22 @@ const Layout: React.FC = ({ children }: PropsWithChildren) => {
   return (
     <div className={styles["preview-layout"]}>
       <header className={styles["preview-layout__header"]}>
-        <Button
-          variant="outline"
-          size="large"
-          className={`${styles["preview-layout__button--back"]}`}
-        >
-          Back to Editor
-        </Button>
-        <Button
-          variant="primary"
-          size="large"
-          className={`${styles["preview-layout__button--share"]}`}
-        >
-          Share Link
-        </Button>
+        <div className={styles["preview-layout__actions"]}>
+          <Button
+            variant="outline"
+            size="large"
+            className={`${styles["preview-layout__button--back"]}`}
+          >
+            Back to Editor
+          </Button>
+          <Button
+            variant="primary"
+            size="large"
+            className={`${styles["preview-layout__button--share"]}`}
+          >
+            Share Link
+          </Button>
+        </div>
       </header>
       <main>{children}</main>
     </div>

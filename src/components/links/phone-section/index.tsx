@@ -59,7 +59,7 @@ function LinksSection({ links }: LinksProps) {
   return (
     <div className={styles.linksSection}>
       {links.length > 0 ? (
-        <div className={styles.links}>
+        <div className="links">
           {links.map((link, index) => {
             const IconComponent = getIconForPlatform(link.platform!);
 
@@ -67,7 +67,7 @@ function LinksSection({ links }: LinksProps) {
               <div
                 style={{ backgroundColor: link.brandColor, color: "white" }}
                 key={link.id}
-                className={styles.link}
+                className="link"
               >
                 <span>
                   {IconComponent && <IconComponent className="icon" />}

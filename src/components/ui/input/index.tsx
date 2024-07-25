@@ -36,6 +36,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       rightIcon,
       required = false,
       error,
+      type,
       validations = {},
       ...inputProps
     },
@@ -62,17 +63,19 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div className={styles["input-field"]}>
-        <label
-          htmlFor={name}
-          className={`${styles["input-field__label"]} ${
-            errorMessage ? styles["input-field__label--error"] : ""
-          }`}
-        >
-          {label}{" "}
-          {isRequired && (
-            <span className={styles["input-field__required"]}>*</span>
-          )}
-        </label>
+        {type !== "hidden" && (
+          <label
+            htmlFor={name}
+            className={`${styles["input-field__label"]} ${
+              errorMessage ? styles["input-field__label--error"] : ""
+            }`}
+          >
+            {label}{" "}
+            {isRequired && (
+              <span className={styles["input-field__required"]}>*</span>
+            )}
+          </label>
+        )}
         <Controller
           name={name}
           control={control}

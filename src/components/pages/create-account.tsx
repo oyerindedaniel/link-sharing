@@ -1,17 +1,21 @@
 "use client";
 
+import { createUser } from "@/app/_actions";
 import { Icons } from "@/assets";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import Button from "../ui/button";
 import Input from "../ui/input";
 
+import { ICreateAccountInputs } from "@/types/account";
+
 export default function CreateAccount() {
-  interface ICreateAccountInputs {
-    emailAddress: string;
-    password: string;
-    confirmPassword: string;
-  }
+  const router = useRouter();
+
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm<ICreateAccountInputs>({
     defaultValues: {
@@ -23,10 +27,15 @@ export default function CreateAccount() {
   });
 
   const onSubmit: SubmitHandler<ICreateAccountInputs> = (data) => {
-    console.log(data);
+    startTransition(() => {
+      createUser(data)
+        .then((res) => {
+          console.log(res.message);
+          router.push("/login");
+        })
+        .catch((err) => console.error(err));
+    });
   };
-
-  console.log(form.formState.errors);
 
   return (
     <div className="create-account">
@@ -83,7 +92,14 @@ export default function CreateAccount() {
                   "Passwords do not match",
               }}
             />
-            <Button type="submit" variant="primary" size="large">
+            <Button
+              className="flex-loader"
+              type="submit"
+              variant="primary"
+              size="large"
+              disabled={isPending}
+            >
+              {isPending && <Loader2 className="animate-spin" />}
               Create new account
             </Button>
           </form>

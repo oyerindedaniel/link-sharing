@@ -18,7 +18,9 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.header__content}>
-        <Image src={Icons.SvgLogo} alt="devlinks" priority quality={100} />
+        <Link href="/login">
+          <Image src={Icons.SvgLogo} alt="devlinks" priority quality={100} />
+        </Link>
 
         <nav>
           <ul>

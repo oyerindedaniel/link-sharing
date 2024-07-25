@@ -4,15 +4,22 @@ import React, { forwardRef } from "react";
 import { Controller, FieldError, useFormContext } from "react-hook-form";
 import styles from "./index.module.scss";
 
+interface SelectOption {
+  value: string | number;
+  label: string;
+  icon?: React.ReactNode;
+}
+
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   name: string;
   label: string;
-  options: { value: any; label: string; icon?: React.ReactNode }[];
+  options: SelectOption[];
   required?: boolean;
   validations?: Record<string, any>;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-  error?: string; // Add error prop
+  error?: string;
+  onChangeValue?: (value: string) => void;
 }
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
@@ -25,6 +32,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
       rightIcon,
       required = false,
       validations = {},
+      onChangeValue,
       error,
       ...selectProps
     },
@@ -80,6 +88,10 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
                 } ${errorMessage ? styles["select-field__select--error"] : ""}`}
                 aria-invalid={!!errorMessage}
                 aria-describedby={`${name}-error`}
+                onChange={(e) => {
+                  field.onChange(e);
+                  onChangeValue?.(e.target.value);
+                }}
               >
                 <option value="" disabled>
                   Select an option

@@ -1,16 +1,24 @@
 "use client";
 
+import { loginUser } from "@/app/_actions";
 import { Icons } from "@/assets";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import Button from "../ui/button";
 import Input from "../ui/input";
 
+export interface ILoginInputs {
+  emailAddress: string;
+  password: string;
+}
+
 export default function Login() {
-  interface ILoginInputs {
-    emailAddress: string;
-    password: string;
-  }
+  const [isPending, startTransition] = useTransition();
+
+  const router = useRouter();
 
   const form = useForm<ILoginInputs>({
     defaultValues: {
@@ -20,7 +28,14 @@ export default function Login() {
   });
 
   const onSubmit: SubmitHandler<ILoginInputs> = (data) => {
-    console.log(data);
+    startTransition(() => {
+      loginUser(data)
+        .then((res) => {
+          console.log(res);
+          router.push("/links");
+        })
+        .catch((err) => console.error(err));
+    });
   };
 
   return (
@@ -57,7 +72,14 @@ export default function Login() {
               }
               required
             />
-            <Button type="submit" variant="primary" size="large">
+            <Button
+              className="flex-loader"
+              type="submit"
+              variant="primary"
+              size="large"
+              disabled={isPending}
+            >
+              {isPending && <Loader2 className="animate-spin" />}
               Login
             </Button>
           </form>

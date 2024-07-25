@@ -2,6 +2,7 @@
 
 import PLATFORM_OPTIONS from "@/app/constants";
 import { Icons } from "@/assets";
+import type { ILinksInputs } from "@/types/links";
 import { useCallback, useState } from "react";
 import {
   FormProvider,
@@ -16,11 +17,7 @@ import Button from "../ui/button";
 import Input from "../ui/input";
 import Select from "../ui/select";
 
-export interface ILinksInputs {
-  links: Array<{ platform: string; link: string }>;
-}
-
-export const DEFAULT_LINK_VALUE = { link: "", platform: "" };
+export const DEFAULT_LINK_VALUE = { link: "", platform: "", brandColor: "" };
 
 export default function Links() {
   const [isInitNewLink, setIsInitNewLink] = useState(true);
@@ -32,11 +29,12 @@ export default function Links() {
   });
 
   const {
+    register,
     control,
     formState: { errors },
+    watch,
+    setValue,
   } = form;
-
-  console.log(errors);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -68,6 +66,15 @@ export default function Links() {
     { platform: "GitHub", link: "https://github.com/johndoe" },
     { platform: "LinkedIn", link: "https://linkedin.com/in/johndoe" },
   ];
+
+  const handlePlatformChange = (platform: string, index: number) => {
+    const platformOption = PLATFORM_OPTIONS.find(
+      (option) => option.value === platform
+    );
+    const brandColor = platformOption ? platformOption.color : "#fff";
+
+    setValue(`links.${index}.brandColor`, brandColor);
+  };
 
   return (
     <div className="links">
@@ -132,6 +139,9 @@ export default function Links() {
                                 required: "This field is required",
                               }}
                               error={platformError?.message}
+                              onChangeValue={(option) =>
+                                handlePlatformChange(option, Idx)
+                              }
                             />
                             <Input
                               name={`links.${Idx}.link`}
@@ -147,6 +157,10 @@ export default function Links() {
                                 },
                               }}
                               error={linkError?.message}
+                            />
+                            <input
+                              type="hidden"
+                              {...register(`links.${Idx}.brandColor` as const)}
                             />
                           </div>
                         );

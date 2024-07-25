@@ -1,0 +1,1 @@
+ALTER TABLE "links" ADD COLUMN "brand_color" varchar(256);

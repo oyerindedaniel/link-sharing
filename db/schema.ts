@@ -27,5 +27,6 @@ export const links = pgTable("links", {
   id: serial("id").primaryKey(),
   platform: platformEnum("platform"),
   link: varchar("link", { length: 256 }),
+  brandColor: varchar("brand_color", { length: 256 }),
   userId: integer("user_id").references(() => users.id),
 });

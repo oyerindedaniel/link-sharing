@@ -1,5 +1,6 @@
 import { Icons } from "@/assets";
 import Image from "next/image";
+import Link from "next/link";
 import { PropsWithChildren } from "react";
 import styles from "./layout.module.scss";
 
@@ -9,15 +10,16 @@ export default function AuthLayout({ children }: Props) {
   return (
     <div className={styles["auth-layout"]}>
       <div className={styles["auth-layout__content"]}>
-        <Image
-          src={Icons.SvgLogo}
-          alt="devlinks"
-          // width={182.5}
-          // height={40}
-          priority
-          quality={100}
-          // className={styles["auth-layout__image"]}
-        />
+        <Link href="/login">
+          <Image
+            src={Icons.SvgLogo}
+            alt="devlinks"
+            priority
+            quality={100}
+            unoptimized
+          />
+        </Link>
+
         <div>{children}</div>
       </div>
     </div>

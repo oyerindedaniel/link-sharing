@@ -15,6 +15,13 @@
       "when": 1721854376526,
       "tag": "0001_quick_doctor_doom",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1721917613071,
+      "tag": "0002_lazy_nova",
+      "breakpoints": true
     }
   ]
 }

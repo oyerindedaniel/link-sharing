@@ -1,8 +1,8 @@
 import { getAuthUser } from "@/utils/auth";
 import { NextRequest, NextResponse } from "next/server";
 
-const isProduction = process.env.NODE_ENV === "production";
 const GUEST_ROUTES = ["/login", "/create-account"];
+const PROTECTED_ROUTES = ["/links", "/profile"];
 const PROTECTED_ROUTE_REDIRECT = "/login";
 const AUTHENTICATED_REDIRECT = "/links";
 
@@ -10,29 +10,23 @@ export async function middleware(req: NextRequest) {
   const tokenCookie = req.cookies.get(process.env.COOKIE_NAME!);
   const token = tokenCookie ? tokenCookie.value : null;
 
-  if (
-    GUEST_ROUTES.includes(req.nextUrl.pathname) ||
-    req.nextUrl.pathname.startsWith("/preview")
-  ) {
-    return NextResponse.next();
+  if (token) {
+    try {
+      const decoded = await getAuthUser();
+
+      if (GUEST_ROUTES.includes(req.nextUrl.pathname)) {
+        return NextResponse.redirect(new URL(AUTHENTICATED_REDIRECT, req.url));
+      }
+
+      return NextResponse.next();
+    } catch (error) {}
   }
 
-  if (!token) {
+  if (PROTECTED_ROUTES.includes(req.nextUrl.pathname)) {
     return NextResponse.redirect(new URL(PROTECTED_ROUTE_REDIRECT, req.url));
   }
 
-  try {
-    const decoded = await getAuthUser();
-    // req.user = decoded;
-
-    if (GUEST_ROUTES.includes(req.nextUrl.pathname)) {
-      return NextResponse.redirect(new URL(AUTHENTICATED_REDIRECT, req.url));
-    }
-
-    return NextResponse.next();
-  } catch (error) {
-    return NextResponse.redirect(new URL(PROTECTED_ROUTE_REDIRECT, req.url));
-  }
+  return NextResponse.next();
 }
 
 export const config = {

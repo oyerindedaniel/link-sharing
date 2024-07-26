@@ -97,8 +97,6 @@ export default function Links({
     setValue(`links.${index}.brandColor`, brandColor);
   };
 
-  console.log(errors);
-
   return (
     <div>
       <h1>Customize your links</h1>

@@ -173,8 +173,6 @@ export const createLink = async (data: ILinksInputs) => {
 export const updateLinks = async (data: ILinksInputs) => {
   const { links: linkData, userId } = data;
 
-  console.log(linkData);
-
   const user = await getAuthUser();
 
   if (!user) {
@@ -278,8 +276,6 @@ export const updateLinks = async (data: ILinksInputs) => {
         }
       })
     );
-
-    console.log("updatedLinks", updatedLinks);
 
     revalidatePath(`/links`);
     revalidateTag("user_links");

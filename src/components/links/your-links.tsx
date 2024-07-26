@@ -20,10 +20,6 @@ export default function YourLinks({}: Props) {
     remove(Idx);
   };
 
-  const platformOptionWatch = watch();
-
-  console.log(fields);
-
   return (
     <div className={styles["your-links"]}>
       <div className={styles["your-links__content"]}>

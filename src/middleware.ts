@@ -10,11 +10,15 @@ export async function middleware(req: NextRequest) {
   const tokenCookie = req.cookies.get(process.env.COOKIE_NAME!);
   const token = tokenCookie ? tokenCookie.value : null;
 
-  if (!token) {
-    if (!GUEST_ROUTES.includes(req.nextUrl.pathname)) {
-      return NextResponse.redirect(new URL(PROTECTED_ROUTE_REDIRECT, req.url));
-    }
+  if (
+    GUEST_ROUTES.includes(req.nextUrl.pathname) ||
+    req.nextUrl.pathname.startsWith("/preview")
+  ) {
     return NextResponse.next();
+  }
+
+  if (!token) {
+    return NextResponse.redirect(new URL(PROTECTED_ROUTE_REDIRECT, req.url));
   }
 
   try {
@@ -27,10 +31,7 @@ export async function middleware(req: NextRequest) {
 
     return NextResponse.next();
   } catch (error) {
-    if (!GUEST_ROUTES.includes(req.nextUrl.pathname)) {
-      return NextResponse.redirect(new URL(PROTECTED_ROUTE_REDIRECT, req.url));
-    }
-    return new NextResponse("Unauthorized", { status: 401 });
+    return NextResponse.redirect(new URL(PROTECTED_ROUTE_REDIRECT, req.url));
   }
 }
 

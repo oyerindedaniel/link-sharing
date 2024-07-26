@@ -4,16 +4,16 @@ import React, { forwardRef } from "react";
 import { Controller, FieldError, useFormContext } from "react-hook-form";
 import styles from "./index.module.scss";
 
-interface SelectOption {
+interface BaseSelectOption {
   value: string | number;
   label: string;
-  icon?: React.ReactNode;
 }
 
-interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectProps<T extends BaseSelectOption>
+  extends React.SelectHTMLAttributes<HTMLSelectElement> {
   name: string;
   label: string;
-  options: SelectOption[];
+  options: T[];
   required?: boolean;
   validations?: Record<string, any>;
   leftIcon?: React.ReactNode;
@@ -22,7 +22,7 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   onChangeValue?: (value: string) => void;
 }
 
-const Select = forwardRef<HTMLSelectElement, SelectProps>(
+const Select = forwardRef<HTMLSelectElement, SelectProps<BaseSelectOption>>(
   (
     {
       name,

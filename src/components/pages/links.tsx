@@ -151,7 +151,7 @@ export default function Links({
                         <Select
                           name={`links.${Idx}.platform`}
                           label="Platform"
-                          options={PLATFORM_OPTIONS as any}
+                          options={PLATFORM_OPTIONS}
                           required
                           validations={{
                             required: "This field is required",

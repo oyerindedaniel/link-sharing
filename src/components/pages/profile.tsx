@@ -28,7 +28,6 @@ export default function Profile({ user }: { user: User }) {
       updateUser(id, data)
         .then((res) => {
           console.log(res);
-          form.reset();
         })
         .catch((err) => console.error(err));
     });

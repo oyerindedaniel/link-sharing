@@ -69,9 +69,8 @@ function LinksSection({ links }: LinksProps) {
                 key={link.id}
                 className="link"
               >
-                <span>
-                  {IconComponent && <IconComponent className="icon" />}
-                </span>
+                {IconComponent && <IconComponent className="icon" />}
+
                 <a href={link.link} target="_blank" rel="noopener noreferrer">
                   {link.platform}
                 </a>

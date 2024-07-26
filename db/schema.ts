@@ -7,14 +7,17 @@ import {
   serial,
   uniqueIndex,
   varchar,
+  text,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable(
   "users",
   {
     id: serial("id").primaryKey(),
-    emailAddress: varchar("email_address", { length: 256 }).notNull().unique(),
-    password: varchar("password", { length: 256 }).notNull(),
+    emailAddress: text("email_address").notNull().unique(),
+    firstName: text("first_name"),
+    lastName: text("last_name"),
+    password: text("password").notNull(),
     imgSrc: varchar("img_src", { length: 256 }),
   },
   (users) => ({

@@ -3,12 +3,12 @@
 import { getIconForPlatform } from "@/app/constants";
 import { Icons } from "@/assets";
 import type { Links } from "@/types/links";
-import type { UserRaw } from "@/types/users";
+import type { User } from "@/types/users";
 import Image from "next/image";
 import styles from "./index.module.scss";
 
 interface ProfileProps {
-  profile: UserRaw;
+  profile: User;
 }
 
 interface LinksProps {
@@ -16,13 +16,13 @@ interface LinksProps {
 }
 
 interface PhoneDisplayProps {
-  profile: UserRaw;
+  profile: User;
   links: Links;
   asEdit: boolean;
 }
 
 function Profile({ profile }: ProfileProps) {
-  const { emailAddress, imgSrc } = profile ?? {};
+  const { emailAddress, imgSrc, firstName } = profile ?? {};
 
   return (
     <div className={styles.profile}>
@@ -39,7 +39,7 @@ function Profile({ profile }: ProfileProps) {
           )}
           <div className={styles.names}>
             <span className={styles.firstName}>{emailAddress}</span>
-            <span className={styles.lastName}>{"devlinks"}</span>
+            <span className={styles.lastName}>{firstName || "devlinks"}</span>
           </div>
         </>
       ) : (

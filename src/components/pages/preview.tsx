@@ -11,7 +11,7 @@ export default function Preview({
   userLinks: Links;
   user: UserRaw;
 }) {
-  const { imgSrc, emailAddress } = user ?? {};
+  const { imgSrc, emailAddress, firstName } = user ?? {};
 
   return (
     <div className="preview">
@@ -31,7 +31,9 @@ export default function Preview({
         )}
         <div className="preview__profile__container">
           <div className="preview__profile">
-            <h1 className="preview__profile__name">Ben Wright</h1>
+            <h1 className="preview__profile__name">
+              {firstName || "Ben Wright"}
+            </h1>
             <p className="preview__profile__email">{user?.emailAddress}</p>
           </div>
           <div

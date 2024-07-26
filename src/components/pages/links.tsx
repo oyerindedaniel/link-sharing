@@ -4,7 +4,6 @@ import { createLink, updateLinks } from "@/app/_actions";
 import PLATFORM_OPTIONS from "@/app/constants";
 import { Icons } from "@/assets";
 import type { ILinksInputs, Links } from "@/types/links";
-import type { UserRaw } from "@/types/users";
 import { Loader2 } from "lucide-react";
 import { useCallback, useState, useTransition } from "react";
 import {
@@ -14,7 +13,6 @@ import {
   useForm,
 } from "react-hook-form";
 import EmptyLinks from "../links/empty-links";
-import PhoneDisplay from "../links/phone-section";
 import styles from "../links/your-links.module.scss";
 import Button from "../ui/button";
 import Input from "../ui/input";
@@ -31,11 +29,9 @@ export const DUMMY_USERID = 1;
 export default function Links({
   userLinks,
   asEdit,
-  user,
 }: {
   userLinks: Links;
   asEdit: boolean;
-  user: UserRaw;
 }) {
   const [isPending, startTransition] = useTransition();
 
@@ -101,117 +97,120 @@ export default function Links({
     setValue(`links.${index}.brandColor`, brandColor);
   };
 
+  console.log(errors);
+
   return (
-    <div className="links">
-      <div className="links__content">
-        <div>
-          <PhoneDisplay profile={user} links={userLinks} asEdit={asEdit} />
-        </div>
-        <div>
-          <h1>Customize your links</h1>
-          <p>
-            Add/edit/remove links below and then share all your profiles with
-            the world!
-          </p>
+    <div>
+      <h1>Customize your links</h1>
+      <p>
+        Add/edit/remove links below and then share all your profiles with the
+        world!
+      </p>
 
-          <Button
-            className="button-add-new-link"
-            type="button"
-            variant="outline"
-            size="large"
-            onClick={() => {
-              !isInitNewLink && setIsInitNewLink(true);
-              isInitNewLink && addNewLink(DEFAULT_LINK_VALUE);
-            }}
-          >
-            + Add new link
-          </Button>
+      <Button
+        className="button-add-new-link"
+        type="button"
+        variant="outline"
+        size="large"
+        onClick={() => {
+          !isInitNewLink && setIsInitNewLink(true);
+          isInitNewLink && addNewLink(DEFAULT_LINK_VALUE);
+        }}
+      >
+        + Add new link
+      </Button>
 
-          {isInitNewLink ? (
-            <FormProvider {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)}>
-                <div className={styles["your-links"]}>
-                  <div className={styles["your-links__content"]}>
-                    <div className={styles["your-links__links"]}>
-                      {fields.map((link, Idx) => {
-                        const platformError = errors.links?.[Idx]?.platform;
-                        const linkError = errors.links?.[Idx]?.link;
+      {isInitNewLink ? (
+        <FormProvider {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className={styles["your-links"]}>
+              <div className={styles["your-links__content"]}>
+                <div className={styles["your-links__links"]}>
+                  {fields.map((link, Idx) => {
+                    const platformError = errors.links?.[Idx]?.platform;
+                    const linkError =
+                      errors.links?.[Idx]?.link?.message ||
+                      errors.links?.[Idx]?.link?.type;
 
-                        return (
-                          <div key={link.id}>
-                            <div className={styles["your-links__link-header"]}>
-                              <span>
-                                <Icons.Slash />
-                                <span>{`Link #${Idx + 1}`}</span>
-                              </span>
-                              <Button
-                                type="button"
-                                className=""
-                                size="large"
-                                onClick={() => removeLink(Idx)}
-                                variant="unstyled"
-                              >
-                                Remove
-                              </Button>
-                            </div>
+                    return (
+                      <div key={link.id}>
+                        <div className={styles["your-links__link-header"]}>
+                          <span>
+                            <Icons.Slash />
+                            <span>{`Link #${Idx + 1}`}</span>
+                          </span>
+                          <Button
+                            type="button"
+                            className=""
+                            size="large"
+                            onClick={() => removeLink(Idx)}
+                            variant="unstyled"
+                          >
+                            Remove
+                          </Button>
+                        </div>
 
-                            <Select
-                              name={`links.${Idx}.platform`}
-                              label="Platform"
-                              options={PLATFORM_OPTIONS as any}
-                              required
-                              validations={{
-                                required: "This field is required",
-                              }}
-                              error={platformError?.message}
-                              onChangeValue={(option) =>
-                                handlePlatformChange(option, Idx)
-                              }
+                        <Select
+                          name={`links.${Idx}.platform`}
+                          label="Platform"
+                          options={PLATFORM_OPTIONS as any}
+                          required
+                          validations={{
+                            required: "This field is required",
+                          }}
+                          error={platformError?.message}
+                          onChangeValue={(option) =>
+                            handlePlatformChange(option, Idx)
+                          }
+                        />
+                        <Input
+                          name={`links.${Idx}.link`}
+                          label="Link"
+                          type="text"
+                          placeholder="e.g. https://example.com"
+                          required
+                          leftIcon={
+                            <Icons.Link
+                              className="icon"
+                              style={{ color: "#737373" }}
                             />
-                            <Input
-                              name={`links.${Idx}.link`}
-                              label="Link"
-                              type="text"
-                              placeholder="e.g. https://example.com"
-                              required
-                              validations={{
-                                pattern: {
-                                  value:
-                                    /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-]*)*$/i,
-                                  message: "Invalid URL",
-                                },
-                              }}
-                              error={linkError?.message}
-                            />
-                            <input
-                              type="hidden"
-                              {...register(`links.${Idx}.brandColor` as const)}
-                            />
-                          </div>
-                        );
-                      })}
-                    </div>
-                    <div className={styles["your-links__action"]}>
-                      <Button
-                        className={`${styles["your-links__action--submit"]} flex-loader`}
-                        type="submit"
-                        variant="primary"
-                        size="large"
-                        disabled={isPending}
-                      >
-                        {isPending && <Loader2 className="animate-spin" />}
-                        Save
-                      </Button>
-                    </div>
-                  </div>
+                          }
+                          validations={{
+                            pattern: {
+                              value:
+                                /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-]*)*$/i,
+                              message: "Invalid URL",
+                            },
+                          }}
+                          error={linkError}
+                        />
+                        <input
+                          type="hidden"
+                          {...register(`links.${Idx}.brandColor` as const)}
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
-              </form>
-            </FormProvider>
-          ) : (
-            <EmptyLinks />
-          )}
-        </div>
-      </div>
+                <div className="action">
+                  <Button
+                    className="action--submit flex-loader"
+                    type="submit"
+                    variant="primary"
+                    size="large"
+                    disabled={isPending}
+                  >
+                    {isPending && <Loader2 className="animate-spin" />}
+                    Save
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </FormProvider>
+      ) : (
+        <EmptyLinks />
+      )}
     </div>
   );
 }

@@ -1,0 +1,29 @@
+form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1.2rem;
+  justify-content: space-between;
+}
+
+.profile-form-container {
+  background-color: $almost-white;
+  padding: 2rem;
+  border-radius: $border-radius-main;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+.profile-input-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  > span {
+    @extend %body-medium;
+    color: $medium-gray;
+    width: 24rem;
+  }
+}

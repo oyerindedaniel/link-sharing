@@ -2,11 +2,12 @@
 
 import { ICreateAccountInputs } from "@/types/account";
 import { ILinksInputs } from "@/types/links";
+import { User } from "@/types/users";
 import { getAuthUser } from "@/utils/auth";
 import db from "@db/drizzle";
 import { links, users } from "@db/schema";
 import bcrypt from "bcryptjs";
-import { and, eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import jwt from "jsonwebtoken";
 import _ from "lodash";
 import { revalidatePath, revalidateTag } from "next/cache";
@@ -74,6 +75,7 @@ export const loginUser = async (
       password,
       existingUser.password
     );
+
     if (!isPasswordValid) {
       throw new Error("Invalid credentials.");
     }
@@ -96,33 +98,48 @@ export const loginUser = async (
   }
 };
 
-// export const updateUser = async (
-//   id: number,
-//   data: ICreateAccountInputs & { imgSrc: string }
-// ) => {
-//   const { emailAddress, password, imgSrc } = data;
+export const updateUser = async (
+  id: number,
+  data: Omit<User, "password" | "id">
+) => {
+  const { emailAddress, imgSrc, firstName, lastName } = data;
 
-//   try {
-//     const updatedUser = await db
-//       .update(users)
-//       .set({
-//         emailAddress,
-//         password,
-//         imgSrc,
-//       })
-//       .where(eq(users.id, id))
-//       .returning({
-//         emailAddress: users.emailAddress,
-//         id: users.id,
-//         imgSrc: users.imgSrc,
-//       });
+  const user = await getAuthUser();
 
-//     return updatedUser;
-//   } catch (error) {
-//     console.error("Error updating user:", error);
-//     throw new Error("Could not update user.");
-//   }
-// };
+  if (!user) {
+    return redirect("/login");
+  }
+
+  try {
+    const updateData = Object.assign(
+      {
+        firstName,
+        lastName,
+      },
+      emailAddress !== user.emailAddress ? { emailAddress } : {},
+      imgSrc ? { imgSrc } : {}
+    );
+
+    const updatedUser = await db
+      .update(users)
+      .set(updateData)
+      .where(eq(users.id, user.id))
+      .returning({
+        emailAddress: users.emailAddress,
+        id: users.id,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        imgSrc: users.imgSrc,
+      });
+
+    revalidatePath(`/profile`);
+
+    return updatedUser;
+  } catch (error) {
+    console.error("Error updating user:", error);
+    throw new Error("Could not update user.");
+  }
+};
 
 export const createLink = async (data: ILinksInputs) => {
   const { links: linkData, userId } = data;
@@ -156,29 +173,82 @@ export const createLink = async (data: ILinksInputs) => {
 export const updateLinks = async (data: ILinksInputs) => {
   const { links: linkData, userId } = data;
 
+  console.log(linkData);
+
   const user = await getAuthUser();
 
   if (!user) {
     return redirect("/login");
   }
 
-  // TODO: improve query
-
   try {
+    // filters out duplicate platforms without ID (leaving newly created)
+    const uniqueLinkData = linkData.reduce<ILinksInputs["links"]>(
+      (acc, linkItem) => {
+        const { platform, id } = linkItem;
+
+        const existingIndex = acc.findIndex(
+          (item) => item.platform === platform
+        );
+        if (existingIndex !== -1) {
+          if (!id) {
+            acc[existingIndex] = linkItem;
+          }
+        } else {
+          acc.push(linkItem);
+        }
+
+        return acc;
+      },
+      []
+    );
+
+    const existingLinks = await db.query.links.findMany({
+      where: eq(links.userId, user.id),
+    });
+
+    const existingLinksMap = new Map(
+      existingLinks.map((link) => [link.id, link])
+    );
+
+    const linkDataIds = new Set(
+      uniqueLinkData.filter((link) => link.id).map((link) => link.id)
+    );
+
+    const linksToDelete = existingLinks.filter(
+      (link) => !linkDataIds.has(link.id)
+    );
+
+    if (linksToDelete.length > 0) {
+      await db.delete(links).where(
+        inArray(
+          links.id,
+          linksToDelete.map((link) => link.id)
+        )
+      );
+    }
+
+    // Ensure that uniqueLinkData does not contain links to be deleted
+
+    const validLinkData = uniqueLinkData.filter(
+      (link) => !linksToDelete.some((delLink) => delLink.id === link.id)
+    );
+
     const updatedLinks = await Promise.all(
-      linkData.map(async (linkItem) => {
+      validLinkData.map(async (linkItem) => {
         const { id, platform, link, brandColor } = linkItem;
 
         if (id) {
-          const existingLink = await db.query.links.findFirst({
-            where: and(eq(links.platform, platform), eq(links.userId, user.id)),
-          });
+          const existingLink = existingLinksMap.get(id);
 
           if (!existingLink || existingLink.userId !== user.id) {
             throw new Error("Link not found or unauthorized");
           }
 
-          if (existingLink.link === link) {
+          if (
+            existingLink.link === link &&
+            existingLink.platform === platform
+          ) {
             return existingLink;
           }
 
@@ -187,6 +257,7 @@ export const updateLinks = async (data: ILinksInputs) => {
             .set({
               link,
               brandColor,
+              platform,
             })
             .where(eq(links.id, id))
             .returning();
@@ -207,6 +278,8 @@ export const updateLinks = async (data: ILinksInputs) => {
         }
       })
     );
+
+    console.log("updatedLinks", updatedLinks);
 
     revalidatePath(`/links`);
     revalidateTag("user_links");

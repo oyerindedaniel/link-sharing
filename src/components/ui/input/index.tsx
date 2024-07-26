@@ -19,7 +19,7 @@ type FormFieldContextValue<
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
-  label: string;
+  label?: string;
   required?: boolean;
   validations?: Record<string, any>;
   leftIcon?: React.ReactNode;
@@ -63,7 +63,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div className={styles["input-field"]}>
-        {type !== "hidden" && (
+        {label && (
           <label
             htmlFor={name}
             className={`${styles["input-field__label"]} ${

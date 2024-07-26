@@ -3,12 +3,17 @@
 @import "../../../styles/shared/text";
 
 .input-field {
+  flex: 1;
+  width: 100%;
+
   &__label {
     @extend %body-small;
 
     color: $black;
     display: inline-block;
     margin-bottom: 0.4rem;
+    flex: 1;
+    width: 100%;
 
     &--error {
       color: $red;
@@ -19,6 +24,8 @@
     position: relative;
     display: flex;
     align-items: center;
+    flex: 1;
+    width: 100%;
   }
 
   &__required {
@@ -48,7 +55,7 @@
     border-radius: 0.8rem;
     width: 100%;
     padding: 1.2rem 1.6rem;
-    border: 0.125rem solid $medium-gray;
+    border: 0.135rem solid $light-gray;
     height: 4.8rem;
     transition: border-color 0.2s, box-shadow 0.2s;
 

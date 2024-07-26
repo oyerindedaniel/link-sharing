@@ -7,10 +7,12 @@ export interface UserState {
 
 export type UserRaw =
   | {
-      password: string;
       emailAddress: string;
-      id: number;
       imgSrc: string | null;
+      id: number;
+      firstName: string | null;
+      lastName: string | null;
+      password: string;
     }
   | null
   | undefined;

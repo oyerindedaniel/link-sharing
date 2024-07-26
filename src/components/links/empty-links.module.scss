@@ -4,7 +4,7 @@
 .empty-links {
   background-color: $almost-white;
   padding: 6.25rem 2rem;
-  border-radius: 1.2rem;
+  border-radius: $border-radius-main;
 
   &__content {
     width: 100%;

@@ -2,7 +2,8 @@
 @import "../../../styles/shared/text";
 
 .phoneDisplay {
-  position: relative;
+  position: sticky;
+  top: 0;
 
   .content {
     position: absolute;
@@ -49,6 +50,10 @@
 
   .names {
     text-align: center;
+
+    .firstName {
+      margin-bottom: 1.3rem;
+    }
 
     .firstName,
     .lastName {

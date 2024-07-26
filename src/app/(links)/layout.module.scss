@@ -11,5 +11,42 @@
   padding: 0;
 
   &__content {
+    background-color: $almost-white;
+  }
+
+  &__links-container {
+    display: flex;
+    gap: 2.4rem;
+    height: 100%;
+    padding: 2.4rem;
+    width: 100%;
+
+    & > div:first-child {
+      padding: 10.15rem 2.4rem;
+      background-color: $white;
+      border-radius: $border-radius-main;
+    }
+
+    & > div:nth-child(2) {
+      flex: 74.5%;
+      background-color: $white;
+      padding: 4rem;
+      border-radius: $border-radius-main;
+      display: flex;
+      flex-direction: column;
+
+      h1 {
+        @extend %heading-medium;
+        margin-bottom: 0.8rem;
+
+        color: $dark-gray;
+      }
+
+      p {
+        @extend %body-medium;
+        color: $medium-gray;
+        margin-bottom: 4rem;
+      }
+    }
   }
 }

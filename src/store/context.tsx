@@ -1,6 +1,10 @@
 "use client";
 
-import { createLink, updateLinks as updateLinksAction } from "@/app/_actions";
+import {
+  createLink,
+  deleteLinkById,
+  updateLinks as updateLinksAction,
+} from "@/app/_actions";
 import { noop } from "@/lib/utils";
 import { ILinksInputs, Links, UserLinks } from "@/types/links";
 import React, {
@@ -9,16 +13,17 @@ import React, {
   useContext,
   useOptimistic,
 } from "react";
-import { LinkActionType } from "./actions";
+import { LinkAction, LinkActionType } from "./actions";
 import linkReducer from "./reducer";
 
 export type DefinedUserLinks = NonNullable<UserLinks>;
 
 type Context = {
   state: ContextState;
+  dispatch: React.Dispatch<LinkAction>;
   addLinks: (data: ILinksInputs) => Promise<void>;
   updateLinks: (data: ILinksInputs) => Promise<void>;
-  // removeLink: (index: number) => Promise<void>;
+  removeLink: (id: number) => void;
 };
 
 export type ContextState = { links: Links };
@@ -29,16 +34,23 @@ const initialLinkState: ContextState = {
 
 const defaultContext: Context = {
   state: initialLinkState,
+  dispatch: () => {},
   addLinks: noop,
   updateLinks: noop,
-  // removeLink: noop,
+  removeLink: () => {},
 };
 
 const LinksContext = createContext<Context>(defaultContext);
 
-export const LinksProvider: React.FC<PropsWithChildren> = ({ children }) => {
+export const LinksProvider: React.FC<
+  PropsWithChildren<{ userLinks: Links }>
+> = ({ children, userLinks }) => {
+  // const [state, dispatch] = useReducer(linkReducer, undefined, () => ({
+  //   links: userLinks,
+  // }));
+
   const [optimisticState, dispatchOptimistic] = useOptimistic(
-    { links: [] },
+    { links: userLinks },
     linkReducer
   );
 
@@ -54,6 +66,7 @@ export const LinksProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
     try {
       await createLink(data);
+      // dispatch({ type: LinkActionType.LinkAdd, payload: { newLinks } });
     } catch (error) {
       dispatchOptimistic({
         type: LinkActionType.LinkRevertOnError,
@@ -82,9 +95,34 @@ export const LinksProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
+  const removeLink = async (id: number) => {
+    const previousState = optimisticState.links;
+
+    dispatchOptimistic({
+      type: LinkActionType.LinkRemove,
+      payload: { id },
+    });
+
+    try {
+      await deleteLinkById(id);
+    } catch (error) {
+      dispatchOptimistic({
+        type: LinkActionType.LinkRevertOnError,
+        payload: { previousLinks: previousState },
+      });
+      throw error;
+    }
+  };
+
   return (
     <LinksContext.Provider
-      value={{ state: optimisticState, addLinks, updateLinks }}
+      value={{
+        state: optimisticState,
+        addLinks,
+        updateLinks,
+        removeLink,
+        dispatch: () => {},
+      }}
     >
       {children}
     </LinksContext.Provider>

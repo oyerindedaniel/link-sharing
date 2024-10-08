@@ -5,6 +5,8 @@ import { getAuthUser } from "@/utils/auth";
 import { PropsWithChildren } from "react";
 import { getLinksByUserId } from "../_data";
 import styles from "./layout.module.scss";
+import Links from "@/components/pages/links";
+import { LinksProvider } from "@/store/context";
 
 interface Props extends PropsWithChildren {}
 
@@ -14,20 +16,22 @@ export default async function LinksLayout({ children }: Props) {
   const userLinks = await getLinksByUserId({ userId: user?.id });
 
   return (
-    <div className={styles["links-layout"]}>
-      <div className={styles["links-layout__content"]}>
-        <Header user={user} />
-        <div className={styles["links-layout__links-container"]}>
-          <div>
-            <PhoneDisplay
-              profile={user}
-              links={userLinks?.links ?? []}
-              asEdit={!!userLinks?.links}
-            />
+    <LinksProvider userLinks={userLinks?.links ?? []}>
+      <div className={styles["links-layout"]}>
+        <div className={styles["links-layout__content"]}>
+          <Header user={user} />
+          <div className={styles["links-layout__links-container"]}>
+            <div>
+              <PhoneDisplay
+                profile={user}
+                links={userLinks?.links ?? []}
+                asEdit={!!userLinks?.links}
+              />
+            </div>
+            {children}
           </div>
-          {children}
         </div>
       </div>
-    </div>
+    </LinksProvider>
   );
 }

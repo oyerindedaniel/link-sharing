@@ -1,7 +1,7 @@
 "use server";
 
 import { ICreateAccountInputs } from "@/types/account";
-import { ILinksInputs } from "@/types/links";
+import { ILinksInputs, Link, Links } from "@/types/links";
 import { User } from "@/types/users";
 import { getAuthUser } from "@/utils/auth";
 import db from "@db/drizzle";
@@ -181,25 +181,20 @@ export const updateLinks = async (data: ILinksInputs) => {
 
   try {
     // filters out duplicate platforms without ID (leaving newly created)
-    const uniqueLinkData = linkData.reduce<ILinksInputs["links"]>(
-      (acc, linkItem) => {
-        const { platform, id } = linkItem;
+    const uniqueLinkData = linkData.reduce<Links>((acc, linkItem) => {
+      const { platform, id } = linkItem;
 
-        const existingIndex = acc.findIndex(
-          (item) => item.platform === platform
-        );
-        if (existingIndex !== -1) {
-          if (!id) {
-            acc[existingIndex] = linkItem;
-          }
-        } else {
-          acc.push(linkItem);
+      const existingIndex = acc.findIndex((item) => item.platform === platform);
+      if (existingIndex !== -1) {
+        if (!id) {
+          acc[existingIndex] = linkItem;
         }
+      } else {
+        acc.push(linkItem);
+      }
 
-        return acc;
-      },
-      []
-    );
+      return acc;
+    }, []);
 
     const existingLinks = await db.query.links.findMany({
       where: eq(links.userId, user.id),
@@ -286,10 +281,7 @@ export const updateLinks = async (data: ILinksInputs) => {
   }
 };
 
-export const updateLink = async (
-  id: number,
-  data: Partial<ILinksInputs["links"][number]>
-) => {
+export const updateLink = async (id: number, data: Partial<Link>) => {
   const { platform, link, brandColor } = data;
 
   try {
@@ -311,3 +303,16 @@ export const updateLink = async (
     throw new Error("Could not update link.");
   }
 };
+
+export const deleteLinkById = async (linkId: number) => {
+  try {
+    await db.delete(links).where(eq(links.id, linkId));
+    revalidatePath(`/links`);
+    revalidateTag("user_links");
+  } catch (error) {
+    console.error("Error deleting link:", error);
+  }
+};
+
+export const sleep = (duration: number) =>
+  new Promise((resolve) => setTimeout(resolve, duration));

@@ -2,6 +2,7 @@
 
 import { getIconForPlatform } from "@/app/constants";
 import { Icons } from "@/assets";
+import { useLinksContext } from "@/store/context";
 import type { Links } from "@/types/links";
 import type { User } from "@/types/users";
 import Image from "next/image";
@@ -55,18 +56,27 @@ function Profile({ profile }: ProfileProps) {
   );
 }
 
-function LinksSection({ links }: LinksProps) {
+function LinksSection({}: LinksProps) {
+  const {
+    state,
+    addLinks,
+    updateLinks,
+    removeLink: removeLinkOptimistic,
+  } = useLinksContext();
+
+  const links = state.links;
+
   return (
     <div className={styles.linksSection}>
       {links.length > 0 ? (
         <div className="links-platform">
-          {links.map((link, index) => {
+          {links.map((link, Idx) => {
             const IconComponent = getIconForPlatform(link.platform!);
 
             return (
               <div
                 style={{ backgroundColor: link.brandColor, color: "white" }}
-                key={link.id}
+                key={link?.id ?? Idx}
                 className="link"
               >
                 {IconComponent && <IconComponent className="icon" />}

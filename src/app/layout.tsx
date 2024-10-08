@@ -54,9 +54,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(FontInstrumantSans.variable)}>
-        <main>
-          <LinksProvider>{children}</LinksProvider>
-        </main>
+        <main>{children}</main>
       </body>
     </html>
   );

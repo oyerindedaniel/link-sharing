@@ -2,8 +2,9 @@
 
 import PLATFORM_OPTIONS from "@/app/constants";
 import { Icons } from "@/assets";
+import { LinkActionType } from "@/store/actions";
 import { useLinksContext } from "@/store/context";
-import type { ILinksInputs } from "@/types/links";
+import type { ILinksInputs, Link } from "@/types/links";
 import { UserLinks } from "@/types/links";
 import { Loader2 } from "lucide-react";
 import { useCallback, useState, useTransition } from "react";
@@ -23,7 +24,7 @@ export const DEFAULT_LINK_VALUE = {
   link: "",
   platform: "github",
   brandColor: "",
-} as ILinksInputs["links"][number];
+} satisfies Link;
 
 export const DUMMY_USERID = 1;
 
@@ -34,11 +35,19 @@ export default function Links({
   userLinks: UserLinks;
   asEdit: boolean;
 }) {
-  const { addLinks, updateLinks } = useLinksContext();
+  const {
+    state,
+    addLinks,
+    updateLinks,
+    removeLink: removeLinkOptimistic,
+    dispatch,
+  } = useLinksContext();
 
-  const links = userLinks?.links ?? [];
+  const links = state.links;
 
   const [isPending, startTransition] = useTransition();
+
+  const [_, startTransitio] = useTransition();
 
   const [isInitNewLink, setIsInitNewLink] = useState(asEdit);
 
@@ -60,17 +69,24 @@ export default function Links({
   const { fields, append, remove } = useFieldArray({
     control,
     name: "links",
+    keyName: "_id",
   });
 
   const addNewLink = useCallback(
-    (value: ILinksInputs["links"][0]) => {
+    (value: Link) => {
       append(value);
     },
     [append]
   );
 
-  const removeLink = (Idx: number) => {
+  const removeLink = async (Idx: number, linkId: number) => {
     remove(Idx);
+    removeLinkOptimistic(linkId);
+    // dispatch({ type: LinkActionType.LinkRemove, payload: { id: linkId } });
+
+    // startTransition(() => {
+    //   sleep(2000).then(() => {});
+    // });
   };
 
   const onSubmit: SubmitHandler<ILinksInputs> = (data) => {
@@ -147,7 +163,7 @@ export default function Links({
                             type="button"
                             className=""
                             size="large"
-                            onClick={() => removeLink(Idx)}
+                            onClick={() => removeLink(Idx, link?.id ?? 0)}
                             variant="unstyled"
                           >
                             Remove

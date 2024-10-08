@@ -3,9 +3,9 @@
 import db from "@db/drizzle";
 import { links } from "@db/schema";
 import { eq } from "drizzle-orm";
-import { cache } from "react";
-import { redirect } from "next/navigation";
 import { unstable_cache as next_cache } from "next/cache";
+import { redirect } from "next/navigation";
+import { cache } from "react";
 
 export const getLinksByUserId = cache(
   async ({ userId }: { userId: number | undefined }) => {
@@ -16,8 +16,9 @@ export const getLinksByUserId = cache(
     return next_cache(
       async (userId: number) => {
         try {
-          const userLinks = await db.query.links.findMany({
-            where: eq(links.userId, userId),
+          const userLinks = await db.query.users.findFirst({
+            where: (users, { eq }) => eq(users.id, userId),
+            with: { links: true },
           });
           return userLinks;
         } catch (error) {

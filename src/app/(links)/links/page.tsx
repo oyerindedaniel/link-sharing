@@ -7,5 +7,5 @@ export default async function LinksPage() {
 
   const userLinks = await getLinksByUserId({ userId: user?.id });
 
-  return <Links userLinks={userLinks} asEdit={!!userLinks.length} />;
+  return <Links userLinks={userLinks} asEdit={!!userLinks?.links} />;
 }

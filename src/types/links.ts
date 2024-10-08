@@ -1,3 +1,4 @@
+import { getLinksByUserId } from "@/app/_data";
 import { Platform } from "./platform";
 
 export interface ILinksInputs {
@@ -10,10 +11,8 @@ export interface ILinksInputs {
   userId: number;
 }
 
-export type Links = Array<{
-  id: number;
-  platform: Platform;
-  link: string;
-  brandColor: string;
-  userId: number;
-}>;
+export type Link = ILinksInputs["links"][number];
+
+export type Links = Array<Link>;
+
+export type UserLinks = Awaited<ReturnType<typeof getLinksByUserId>>;

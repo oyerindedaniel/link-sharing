@@ -28,3 +28,5 @@ export function absoluteUrl(path: string) {
 export const generateUserLink = (userId: number): string => {
   return `${getBaseUrl()}/${userId}`;
 };
+
+export const noop = (): Promise<void> => Promise.resolve();

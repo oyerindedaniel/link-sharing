@@ -1,9 +1,10 @@
 "use client";
 
-import { createLink, updateLinks } from "@/app/_actions";
 import PLATFORM_OPTIONS from "@/app/constants";
 import { Icons } from "@/assets";
-import type { ILinksInputs, Links } from "@/types/links";
+import { useLinksContext } from "@/store/context";
+import type { ILinksInputs } from "@/types/links";
+import { UserLinks } from "@/types/links";
 import { Loader2 } from "lucide-react";
 import { useCallback, useState, useTransition } from "react";
 import {
@@ -30,16 +31,20 @@ export default function Links({
   userLinks,
   asEdit,
 }: {
-  userLinks: Links;
+  userLinks: UserLinks;
   asEdit: boolean;
 }) {
+  const { addLinks, updateLinks } = useLinksContext();
+
+  const links = userLinks?.links ?? [];
+
   const [isPending, startTransition] = useTransition();
 
   const [isInitNewLink, setIsInitNewLink] = useState(asEdit);
 
   const form = useForm<ILinksInputs>({
     defaultValues: {
-      links: asEdit ? userLinks : [DEFAULT_LINK_VALUE],
+      links: asEdit ? links : [DEFAULT_LINK_VALUE],
     },
   });
 
@@ -80,7 +85,7 @@ export default function Links({
     }
 
     startTransition(() => {
-      createLink({ ...data, userId: DUMMY_USERID })
+      addLinks({ ...data })
         .then((res) => {
           console.log(res);
         })
@@ -111,8 +116,9 @@ export default function Links({
         variant="outline"
         size="large"
         onClick={() => {
-          !isInitNewLink && setIsInitNewLink(true);
-          isInitNewLink && addNewLink(DEFAULT_LINK_VALUE);
+          isInitNewLink
+            ? addNewLink(DEFAULT_LINK_VALUE)
+            : setIsInitNewLink(true);
         }}
       >
         + Add new link

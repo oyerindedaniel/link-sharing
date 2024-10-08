@@ -4,6 +4,7 @@ import "../styles/globals.scss";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { FontInstrumantSans } from "./fonts";
+import { LinksProvider } from "@/store/context";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -53,7 +54,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(FontInstrumantSans.variable)}>
-        <main>{children}</main>
+        <main>
+          <LinksProvider>{children}</LinksProvider>
+        </main>
       </body>
     </html>
   );

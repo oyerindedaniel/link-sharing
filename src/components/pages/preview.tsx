@@ -1,17 +1,10 @@
+import { UserLinks } from "@/types/links";
 import { getIconForPlatform } from "@/app/constants";
 import { Icons } from "@/assets";
-import type { Links } from "@/types/links";
-import { UserRaw } from "@/types/users";
 import Image from "next/image";
 
-export default function Preview({
-  userLinks,
-  user,
-}: {
-  userLinks: Links;
-  user: UserRaw;
-}) {
-  const { imgSrc, emailAddress, firstName } = user ?? {};
+export default function Preview({ userLinks }: { userLinks: UserLinks }) {
+  const { imgSrc, emailAddress, firstName, links } = userLinks ?? {};
 
   return (
     <div className="preview">
@@ -34,13 +27,13 @@ export default function Preview({
             <h1 className="preview__profile__name">
               {firstName || "Ben Wright"}
             </h1>
-            <p className="preview__profile__email">{user?.emailAddress}</p>
+            <p className="preview__profile__email">{emailAddress}</p>
           </div>
           <div
             style={{ height: "100%", overflow: "visible", padding: 0 }}
             className="links-platform"
           >
-            {userLinks.map((link, index) => {
+            {(links ?? []).map((link, index) => {
               const IconComponent = getIconForPlatform(link.platform);
 
               return (

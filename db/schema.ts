@@ -9,6 +9,7 @@ import {
   varchar,
   text,
 } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 
 export const users = pgTable(
   "users",
@@ -24,6 +25,10 @@ export const users = pgTable(
     emailIdx: index("email_idx").on(users.emailAddress),
   })
 );
+
+export const usersRelations = relations(users, ({ many }) => ({
+  links: many(links),
+}));
 
 export const platformEnum = pgEnum("platform", platformValues);
 
@@ -47,3 +52,10 @@ export const links = pgTable(
     };
   }
 );
+
+export const linksRelations = relations(links, ({ one }) => ({
+  user: one(users, {
+    fields: [links.userId],
+    references: [users.id],
+  }),
+}));

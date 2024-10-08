@@ -21,8 +21,8 @@ export default async function LinksLayout({ children }: Props) {
           <div>
             <PhoneDisplay
               profile={user}
-              links={userLinks}
-              asEdit={!!userLinks.length}
+              links={userLinks?.links ?? []}
+              asEdit={!!userLinks?.links}
             />
           </div>
           {children}
